@@ -31,17 +31,20 @@ module.exports = function (passport) {
       }
     }))
     
-  passport.serializeUser((user, cb) => {
-    process.nextTick(() => {
-      return cb(null, {
-        id: user.id,
-        username: user.username,
-        picture: user.picture
+    passport.serializeUser(function(user, cb) {
+      process.nextTick(function() {
+        return cb(null, {
+          id: user.id,
+          username: user.username,
+          picture: user.picture,
+          firstName: user.firstName
+        });
       });
     });
-  });
-
-  passport.deserializeUser((user, cb) => {
-    process.nextTick(() => cb(null, user));
-  });
+    
+    passport.deserializeUser(function(user, cb) {
+      process.nextTick(function() {
+        return cb(null, user);
+      });
+    });
 }
