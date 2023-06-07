@@ -10,7 +10,7 @@ const MongoStore = require("connect-mongo")
 const connectDB = require("./config/db")
 
 // Load config
-dotenv.config({path: './config/config.env'})
+dotenv.config({ path: './config/config.env' })
 const mongoURI = process.env.MONGO_URI
 
 // Passport config
@@ -26,21 +26,32 @@ app.use(express.urlencoded({ extended: false }));
 
 // Logging
 if (process.env.NODE_ENV === "development") {
-    app.use(morgan("dev"))
+  app.use(morgan("dev"))
 }
 
+//Handlebars Helpers
+
+const { formatDate } = require("./helpers/hbs")
+
 // Handlebars
-app.engine('.hbs', exphbs.engine({defaultLayout: "main", extname: '.hbs'}));
+app.engine('.hbs',
+  exphbs.engine({
+    helpers: {
+      formatDate,
+    },
+    defaultLayout: "main",
+    extname: '.hbs'
+  }));
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
 // Sessions (must go above passport middleware)
 app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: mongoURI})
-  }))
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: mongoURI })
+}))
 
 
 // Passport Middleware
