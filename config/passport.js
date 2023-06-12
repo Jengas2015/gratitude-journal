@@ -36,7 +36,7 @@ module.exports = function (passport) {
         return cb(null, {
           id: user.id,
           username: user.username,
-          picture: user.picture,
+          image: user.image,
           firstName: user.firstName
         });
       });
