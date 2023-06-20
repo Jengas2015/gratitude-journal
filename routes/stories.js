@@ -50,8 +50,8 @@ router.get('/', ensureAuth, async (req, res) => {
 router.get("/:id", ensureAuth, async (req, res) => {
     try {
         const story = await Story.findById(req.params.id)
-        .populate("user")
-        .lean()
+            .populate("user")
+            .lean()
         if (!story) {
             return res.render("error/404")
         }
@@ -64,19 +64,16 @@ router.get("/:id", ensureAuth, async (req, res) => {
     }
 })
 
-// @desc Show edit page
-// @route GET /stories/edit/:id
-
 router.get('/edit/:id', ensureAuth, async (req, res) => {
     try {
         const story = await Story.findOne({
             _id: req.params.id,
         }).lean()
-    
+
         if (!story) {
             res.render("error/404")
         }
-    
+
         //checks to see if it's the owner of the story
         if (story.user != req.user.id) {
             res.redirect("/stories")
@@ -133,6 +130,27 @@ router.delete('/:id', ensureAuth, async (req, res) => {
         return res.render("error/500")
     }
 
+})
+
+// @desc User Stories
+// @route GET /stories/user/:userId
+
+router.get("/user/:userId", ensureAuth, async (req, res) => {
+    try {
+        const stories = await Story.find({
+            user: req.params.userId,
+            status: "public"
+        })
+            .populate("user")
+            .lean()
+
+            res.render("stories/index", {
+                stories
+            })
+    } catch (err) {
+        console.error(err)
+        res.render("error/500")
+    }
 })
 
 module.exports = router
