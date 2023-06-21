@@ -20,3 +20,22 @@ p {
 .img-small {
     width: 180px;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 20%;
+    overflow-y: hidden;
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+  }
