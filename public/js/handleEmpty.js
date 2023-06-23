@@ -1,26 +1,26 @@
 const form = document.querySelector('form');
 const titleInput = document.querySelector('#title');
-const bodyInput = document.querySelector("#body")
 const modal = document.querySelector('#modal');
 const modalMessage = document.querySelector("#modal-message")
 const closeButton = document.querySelector('#modal-close');
 const overlay = document.querySelector('#overlay');
 
   form.addEventListener('submit', (event) => {
-    if (!titleInput.value || !bodyInput.value) {
+    const bodyInputValue = CKEDITOR.instances.body.getData();
+    if (!titleInput.value || !bodyInputValue) {
       event.preventDefault();
       let message = 'Please fill in the ';
       if (!titleInput.value) {
         message += 'title';
       }
-      if (!titleInput.value && !bodyInput.value) {
+      if (!titleInput.value && !bodyInputValue) {
         message += ' and ';
       }
-      if (!bodyInput.value) {
+      if (!bodyInputValue) {
         message += 'body';
       }
       message += ' field';
-      if ((!titleInput.value && !bodyInput.value) || (!titleInput.value && bodyInput.value)) {
+      if ((!titleInput.value && !bodyInputValue) || (!titleInput.value && bodyInputValue)) {
         message += 's';
       }
       modalMessage.textContent = message;

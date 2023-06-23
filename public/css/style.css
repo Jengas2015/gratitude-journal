@@ -50,3 +50,7 @@ p {
     border: 1px solid #888;
     width: 100%;
   }
+
+  #modal-cancel {
+    margin-left: 10px;
+  }
