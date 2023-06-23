@@ -4,6 +4,7 @@ const bodyInput = document.querySelector("#body")
 const modal = document.querySelector('#modal');
 const modalMessage = document.querySelector("#modal-message")
 const closeButton = document.querySelector('#modal-close');
+const overlay = document.querySelector('#overlay');
 
   form.addEventListener('submit', (event) => {
     if (!titleInput.value || !bodyInput.value) {
@@ -24,11 +25,13 @@ const closeButton = document.querySelector('#modal-close');
       }
       modalMessage.textContent = message;
       modal.style.display = 'block';
+      overlay.style.display = "block";
       document.body.style.overflowY="hidden"
     }
   });
 
   closeButton.addEventListener('click', () => {
     modal.style.display = 'none';
+    overlay.style.display = "none";
     document.body.style.overflowY = "auto"
   });
