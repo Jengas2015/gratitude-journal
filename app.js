@@ -9,6 +9,17 @@ const passport = require("passport")
 const session = require("express-session")
 const MongoStore = require("connect-mongo")
 const connectDB = require("./config/db")
+const multer = require("multer")
+const cloudinary = require("cloudinary").v2
+const { CloudinaryStorage } = require("multer-storage-cloudinary")
+
+// Cloudinary config
+cloudinary.config({
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
+})
+
 
 // Load config
 dotenv.config({ path: './config/config.env' })
@@ -42,7 +53,7 @@ if (process.env.NODE_ENV === "development") {
 
 //Handlebars Helpers
 
-const { formatDate,  truncate, stripTags, editIcon, select } = require("./helpers/hbs")
+const { formatDate, truncate, stripTags, editIcon, select } = require("./helpers/hbs")
 
 // Handlebars
 app.engine('.hbs',
