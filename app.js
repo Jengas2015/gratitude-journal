@@ -20,6 +20,16 @@ cloudinary.config({
   api_secret: CLOUDINARY_API_SECRET,
 })
 
+// Configure multer and cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "Gratitudly",
+    allowedFormats: ["jpeg", "png", "jpg"],
+  }
+})
+
+const upload = multer({ storage: storage })
 
 // Load config
 dotenv.config({ path: './config/config.env' })
