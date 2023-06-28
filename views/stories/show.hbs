@@ -7,6 +7,12 @@
             <div class="card-content">
                 <span class="card-title">{{formatDate date "MMMM Do YYYY, h:mm:ss a"}}</span>
                 {{{story.body}}}
+                
+                {{!-- if the story has an image, render below --}}
+                {{#if story.image}}
+                <source>{{story.image}}</source>
+                {{/if}}
+                
             </div>
         </div>
     </div>
@@ -22,3 +28,4 @@
         </div>
     </div>
 </div>
+

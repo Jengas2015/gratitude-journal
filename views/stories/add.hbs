@@ -1,7 +1,7 @@
 <h3>Add Story</h3>
 
 <div class="row">
-    <form action="/stories" method="POST" class="col s12">
+    <form action="/stories" method="POST" enctype="multipart/form-data" class="col s12">
     <div class="row">
         <div class="input-field">
             <input type="text" id="title" name="title">
@@ -22,6 +22,18 @@
         <div class="input-field">
             <h5>Tell Us Your Story:</h5>
             <textarea name="body" id="body"></textarea>
+        </div>
+    </div>
+
+        <div class="row">
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>Upload Image</span>
+                <input type="file" name="image">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
         </div>
     </div>
 

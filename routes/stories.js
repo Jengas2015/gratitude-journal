@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const { ensureAuth } = require("../middleware/auth")
+const upload = require("../app")
 
 const Story = require("../models/Story")
 
@@ -14,9 +15,12 @@ router.get('/add', ensureAuth, (req, res) => {
 // @desc Process add form
 // @route POST /stories
 
-router.post('/', ensureAuth, async (req, res) => {
+router.post('/', ensureAuth, upload.single("image"), async (req, res) => {
     try {
         req.body.user = req.user.id
+        if (req.file) {
+            req.body.image = req.file.path
+        }
         await Story.create(req.body)
         res.redirect("/dashboard")
     } catch (err) {

@@ -13,12 +13,23 @@ const multer = require("multer")
 const cloudinary = require("cloudinary").v2
 const { CloudinaryStorage } = require("multer-storage-cloudinary")
 
+// Load config
+dotenv.config({ path: './config/config.env' })
+const mongoURI = process.env.MONGO_URI
+
+// Passport config
+require('./config/passport')(passport)
+
+connectDB()
+
+const app = express()
+
 // Cloudinary config
 cloudinary.config({
-  cloud_name: CLOUDINARY_CLOUD_NAME,
-  api_key: CLOUDINARY_API_KEY,
-  api_secret: CLOUDINARY_API_SECRET,
-})
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 // Configure multer and cloudinary
 const storage = new CloudinaryStorage({
@@ -31,16 +42,7 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage })
 
-// Load config
-dotenv.config({ path: './config/config.env' })
-const mongoURI = process.env.MONGO_URI
-
-// Passport config
-require('./config/passport')(passport)
-
-connectDB()
-
-const app = express()
+module.exports = upload;
 
 //Body parser
 app.use(express.json());
