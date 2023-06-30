@@ -26,6 +26,10 @@ const StorySchema = new mongoose.Schema ({
 
     image: {
         type: String,
+    },
+
+    image_id: {
+        type: String,
     }
 })
 

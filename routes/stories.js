@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const { ensureAuth } = require("../middleware/auth")
 const upload = require("../app")
+const cloudinary = require("cloudinary").v2
 
 const Story = require("../models/Story")
 
@@ -15,19 +16,21 @@ router.get('/add', ensureAuth, (req, res) => {
 // @desc Process add form
 // @route POST /stories
 
-router.post('/', ensureAuth, upload.single("image"), async (req, res) => {
+router.post('/', ensureAuth, upload.single('image'), async (req, res) => {
     try {
-        req.body.user = req.user.id
+        req.body.user = req.user.id;
         if (req.file) {
-            req.body.image = req.file.path
+            const result = await cloudinary.uploader.upload(req.file.path);
+            req.body.image_id = result.public_id;
+            req.body.image = result.secure_url;
         }
-        await Story.create(req.body)
-        res.redirect("/dashboard")
+        await Story.create(req.body);
+        res.redirect('/dashboard');
     } catch (err) {
-        console.error(err)
-        res.render("error/500")
+        console.error(err);
+        res.render('error/500');
     }
-})
+});
 
 // @desc Show all stories
 // @route GET /stories/index
@@ -127,13 +130,21 @@ router.put('/:id', ensureAuth, async (req, res) => {
 
 router.delete('/:id', ensureAuth, async (req, res) => {
     try {
-        await Story.findOneAndDelete({ _id: req.params.id })
-        res.redirect("/dashboard")
+        const story = await Story.findById(req.params.id)
+        if (!story) {
+            return res.render('error/404')
+        }
+        if (story.user != req.user.id) {
+            res.redirect('/stories')
+        } else {
+            await cloudinary.uploader.destroy(story.image_id)
+            await story.remove()
+            res.redirect('/dashboard')
+        }
     } catch (err) {
         console.error(err)
-        return res.render("error/500")
+        return res.render('error/500')
     }
-
 })
 
 // @desc User Stories
