@@ -130,19 +130,23 @@ router.put('/:id', ensureAuth, async (req, res) => {
 
 router.delete('/:id', ensureAuth, async (req, res) => {
     try {
-        const story = await Story.findById(req.params.id)
+        const story = await Story.findOne({ _id: req.params.id })
         if (!story) {
             return res.render('error/404')
         }
         if (story.user != req.user.id) {
             res.redirect('/stories')
         } else {
-            await cloudinary.uploader.destroy(story.image_id)
-            await story.remove()
+            if (story.image_id) {
+                await cloudinary.uploader.destroy(story.image_id)
+                console.log('Image deleted successfully')
+            }
+            await Story.deleteOne({ _id: req.params.id })
             res.redirect('/dashboard')
         }
     } catch (err) {
         console.error(err)
+        console.log('Error deleting image from Cloudinary:', err.message)
         return res.render('error/500')
     }
 })
