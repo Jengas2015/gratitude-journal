@@ -138,8 +138,9 @@ router.delete('/:id', ensureAuth, async (req, res) => {
             res.redirect('/stories')
         } else {
             if (story.image_id) {
-                await cloudinary.uploader.destroy(story.image_id)
-                console.log('Image deleted successfully')
+                await cloudinary.uploader.destroy(story.image_id, { resource_type: 'image' })
+                .then(result => console.log(result))
+                .catch(err => console.log(err))
             }
             await Story.deleteOne({ _id: req.params.id })
             res.redirect('/dashboard')
