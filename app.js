@@ -35,7 +35,6 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "Gratitudly",
     allowedFormats: ["jpeg", "png", "jpg"],
   }
 })

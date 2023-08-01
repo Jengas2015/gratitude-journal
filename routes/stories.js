@@ -23,6 +23,8 @@ router.post('/', ensureAuth, upload.single('image'), async (req, res) => {
             const result = await cloudinary.uploader.upload(req.file.path);
             req.body.image_id = result.public_id;
             req.body.image = result.secure_url;
+
+            console.log(result.public_id)
         }
         await Story.create(req.body);
         res.redirect('/dashboard');
@@ -138,9 +140,8 @@ router.delete('/:id', ensureAuth, async (req, res) => {
             res.redirect('/stories')
         } else {
             if (story.image_id) {
-                await cloudinary.uploader.destroy(story.image_id, { resource_type: 'image' })
-                .then(result => console.log(result))
-                .catch(err => console.log(err))
+                console.log(story.image_id)
+                await cloudinary.uploader.destroy(story.image_id, { resource_type: 'image' }, function (err, result) {console.log(result, err) });
             }
             await Story.deleteOne({ _id: req.params.id })
             res.redirect('/dashboard')
