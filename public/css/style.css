@@ -28,7 +28,6 @@ p {
     left: 0;
     top: 30%;
     width: 50%;
-    height: 22%;
     overflow-y: hidden;
   }
   
@@ -55,3 +54,6 @@ p {
   #modal-cancel {
     margin-left: 10px;
   }
+#modal-message {
+  font-size: 2rem;
+}
