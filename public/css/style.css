@@ -48,6 +48,7 @@ p {
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #888;
+    height: 100%;
     width: 100%;
   }
 
